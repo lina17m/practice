@@ -1,7 +1,4 @@
-bin/
-obj/
-Debug/
-Release/
-*.dll
-*.pdb
-*.exe
+**/bin/
+**/obj/
+**/Debug/
+**/Release/
