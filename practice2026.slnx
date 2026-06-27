@@ -4,4 +4,5 @@
   <Project Path="FileSystemCommands/FileSystemCommands.csproj" />
   <Project Path="FileSystemCommandsTests/FileSystemCommandsTests.csproj" />
   <Project Path="MetadataViewer/MetadataViewer.csproj" />
+  <Project Path="PluginSystem/PluginSystem.csproj" />
 </Solution>

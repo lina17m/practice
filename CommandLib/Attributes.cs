@@ -1,4 +1,5 @@
 using System;
+namespace CommandLib;
 
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method | AttributeTargets.Property)]
 public class DisplayNameAttribute : Attribute
@@ -16,5 +17,15 @@ public class VersionAttribute : Attribute
     {
         Major = major;
         Minor = minor;
+    }
+}
+
+[AttributeUsage(AttributeTargets.Class)]
+public class PluginLoadAttribute : Attribute
+{
+    public string[] Dependencies { get; }
+    public PluginLoadAttribute(params string[] dependencies)
+    {
+        Dependencies = dependencies;
     }
 }

@@ -1,12 +1,14 @@
 ﻿using CommandLib; 
 namespace FileSystemCommands;
 
+[PluginLoad]
 [DisplayName("Команда расчета размера директории")]
 [Version(1, 0)]
 public class DirectorySizeCommand : ICommand
 {
     private readonly string _path;
     public long TotalSize { get; private set; }
+    public DirectorySizeCommand() : this(Directory.GetCurrentDirectory()) { }
     public DirectorySizeCommand(string path) => _path = path;
     [DisplayName("Вычислить суммарный размер всех файлов")]
     public void Execute()
@@ -20,6 +22,7 @@ public class DirectorySizeCommand : ICommand
     }
 }
 
+[PluginLoad("FileSystemCommands.DirectorySizeCommand")]
 [DisplayName("Команда поиска файлов по маске")]
 [Version(1, 1)]
 public class FindFilesCommand : ICommand
@@ -27,6 +30,7 @@ public class FindFilesCommand : ICommand
     private readonly string _path;
     private readonly string _pattern;
     public List<string> FoundFiles { get; private set; } = new();
+    public FindFilesCommand() : this(Directory.GetCurrentDirectory(), "*.*") { }
     public FindFilesCommand(string path, string pattern)
     {
         _path = path;
