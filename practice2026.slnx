@@ -3,4 +3,5 @@
   <Project Path="CommandRunner/CommandRunner.csproj" />
   <Project Path="FileSystemCommands/FileSystemCommands.csproj" />
   <Project Path="FileSystemCommandsTests/FileSystemCommandsTests.csproj" />
+  <Project Path="MetadataViewer/MetadataViewer.csproj" />
 </Solution>

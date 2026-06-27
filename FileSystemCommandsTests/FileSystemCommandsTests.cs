@@ -9,8 +9,8 @@ public class FileSystemCommandsTests
     {
         var testDir = Path.Combine(Path.GetTempPath(), "TestDir_" + Path.GetRandomFileName());
         Directory.CreateDirectory(testDir);
-        File.WriteAllText(Path.Combine(testDir, "test1.txt"), "Hello"); // 5 байт
-        File.WriteAllText(Path.Combine(testDir, "test2.txt"), "World"); // 5 байт
+        File.WriteAllText(Path.Combine(testDir, "test1.txt"), "Hello");
+        File.WriteAllText(Path.Combine(testDir, "test2.txt"), "World"); 
         
         var command = new DirectorySizeCommand(testDir);
         command.Execute(); 
