@@ -1,2 +1,8 @@
 <Solution>
+  <Project Path="CommandLib/CommandLib.csproj" />
+  <Project Path="CommandRunner/CommandRunner.csproj" />
+  <Project Path="FileSystemCommands/FileSystemCommands.csproj" />
+  <Project Path="FileSystemCommandsTests/FileSystemCommandsTests.csproj" />
+  <Project Path="MetadataViewer/MetadataViewer.csproj" />
+  <Project Path="PluginSystem/PluginSystem.csproj" />
 </Solution>
