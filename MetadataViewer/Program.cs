@@ -1,4 +1,6 @@
 ﻿using System.Reflection;
+using CommandLib;
+
 if (args.Length == 0) return;
 
 try
