@@ -32,10 +32,14 @@ public static class ClassGenerator
 
         using var stream = new MemoryStream();
         var result = compilation.Emit(stream);
-        if (!result.Success) throw new Exception("Ошибка в коде!");
+        if (!result.Success)
+        {
+            var errors = string.Join("\n", result.Diagnostics.Where(d => d.Severity == DiagnosticSeverity.Error).Select(d => d.GetMessage()));
+            throw new Exception($"Ошибка компиляции:\n{errors}");
+        }
+
         var assembly = Assembly.Load(stream.ToArray());
         var type = assembly.GetType("Calculator")!;
-        
         return (ICalculator)Activator.CreateInstance(type)!;
     }
 }
