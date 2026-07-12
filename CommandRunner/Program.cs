@@ -2,7 +2,8 @@
 using CommandLib;
 try
 {
-    string dllPath = Path.GetFullPath(@"../FileSystemCommands/bin/Debug/net10.0/FileSystemCommands.dll");
+    string executionPath = AppDomain.CurrentDomain.BaseDirectory;
+    string dllPath = Path.Combine(executionPath, "FileSystemCommands.dll");
     
     if (!File.Exists(dllPath))
     {
