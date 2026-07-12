@@ -39,10 +39,6 @@ try
         }
     }
 }
-catch (Exception ex)
-{
-    Console.WriteLine($"Ошибка: {ex.Message}");
-}
 
 catch (ReflectionTypeLoadException ex)
 {
@@ -51,4 +47,9 @@ catch (ReflectionTypeLoadException ex)
     {
         Console.WriteLine($"- {loaderException?.Message}");
     }
+}
+
+catch (Exception ex)
+{
+    Console.WriteLine($"Ошибка: {ex.Message}");
 }
