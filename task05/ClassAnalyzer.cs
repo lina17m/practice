@@ -11,7 +11,7 @@ namespace task05
 
         public ClassAnalyzer(Type type)
         {
-            _type = type;
+            _type = type ?? throw new ArgumentNullException(nameof(type));
         }
 
         public IEnumerable<string> GetPublicMethods()
@@ -45,7 +45,7 @@ namespace task05
 
         public bool HasAttribute<T>() where T : Attribute
         {
-            return _type.GetCustomAttribute<T>() != null;
+            return _type.IsDefined(typeof(T), true);
         }
     }
 }
