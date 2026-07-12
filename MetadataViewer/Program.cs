@@ -43,3 +43,12 @@ catch (Exception ex)
 {
     Console.WriteLine($"Ошибка: {ex.Message}");
 }
+
+catch (ReflectionTypeLoadException ex)
+{
+    Console.WriteLine("Ошибка загрузки типов из сборки: ");
+    foreach (var loaderException in ex.LoaderExceptions)
+    {
+        Console.WriteLine($"- {loaderException?.Message}");
+    }
+}
