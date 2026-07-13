@@ -17,6 +17,19 @@ namespace task14
             } while (initialVal != Interlocked.CompareExchange(ref _result, computVal, initialVal));
         }
 
+         public static double SolveSingleThread(double a, double b, Func<double, double> function, double step)
+        {
+            int n = (int)Math.Max(1, Math.Ceiling((b - a) / step));
+            double h = (b - a) / n;
+            double sum = (function(a) + function(b)) / 2.0;
+            for (int i = 1; i < n; i++)
+            {
+                sum += function(a + i * h);
+            }
+            return sum * h;
+        }
+
+
         public static double Solve(double a, double b, Func<double, double> function, double step, int threadsNumber)
         {
             _result = 0;
@@ -43,7 +56,6 @@ namespace task14
                 }
                 barrier.SignalAndWait();
             }
-
             return _result;
         }
 
