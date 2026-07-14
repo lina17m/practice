@@ -18,7 +18,7 @@ namespace task17
         public void HardStop_StopsImmediately()
         {
             var queue = new BlockingCollection<ICommand>();
-            var server = new ServerThread(queue);
+            var server = new ServerThread(queue, new Scheduler());
             var testCmd = new TestCommand();
 
             queue.Add(new HardStop(server));
@@ -34,7 +34,7 @@ namespace task17
         public void SoftStop_ProcessesRemainingCommands()
         {
             var queue = new BlockingCollection<ICommand>();
-            var server = new ServerThread(queue);
+            var server = new ServerThread(queue, new Scheduler());
             var testCmd = new TestCommand();
 
             queue.Add(new SoftStop(server, queue));
@@ -51,10 +51,27 @@ namespace task17
         public void Commands_ShouldThrow_WhenCalledFromOtherThread()
         {
             var queue = new BlockingCollection<ICommand>();
-            var server = new ServerThread(queue);
+            var server = new ServerThread(queue, new Scheduler());
             var hardStop = new HardStop(server);
 
             Assert.Throws<InvalidOperationException>(() => hardStop.Execute());
+        }
+
+        [Fact]
+        public void LongTasks_AreProcessedByScheduler()
+        {
+            var queue = new BlockingCollection<ICommand>();
+            var sched = new Scheduler();
+            var server = new ServerThread(queue, sched);
+            
+            var longTask = new LongTask(5); 
+            queue.Add(longTask);
+
+            server.Start();
+            Thread.Sleep(200); 
+
+            Assert.True(longTask.IsCompleted);
+            server.Stop();
         }
     }
 }

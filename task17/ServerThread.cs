@@ -8,21 +8,13 @@ namespace task17
     {
         private readonly BlockingCollection<ICommand> _queue; 
         private readonly Thread _thread;                     
-        private Action _act;                            
+        private readonly IScheduler _scheduler;                         
         private volatile bool _stop = false;           
 
-        public ServerThread(BlockingCollection<ICommand> queue)
+        public ServerThread(BlockingCollection<ICommand> queue, IScheduler scheduler)
         {
             _queue = queue;
-            _act = () =>
-            {
-                try
-                {
-                    var cmd = _queue.Take(); 
-                    Exec(cmd);
-                }
-                catch { _stop = true; } 
-            };
+            _scheduler = scheduler;
             _thread = new Thread(Run);
         }
 
@@ -30,12 +22,36 @@ namespace task17
 
         private void Run()
         {
-            while (!_stop) _act();
+            while (!_stop)
+            {
+                bool process = false;
+
+                if (_queue.TryTake(out var cmd))
+                {
+                    Exec(cmd);
+                    process = true;
+                }
+
+                if (_scheduler.HasCommand())
+                {
+                    Exec(_scheduler.Select());
+                    process = true;
+                }
+
+                if (!process) Thread.Sleep(1);
+            }
         }
 
         private void Exec(ICommand cmd)
         {
-            try { cmd.Execute(); }
+            try 
+            { 
+                cmd.Execute(); 
+                if (cmd is ILongCommand { IsCompleted: false } longCmd)
+                {
+                    _scheduler.Add(longCmd);
+                }
+            }
             catch (Exception ex) { HandleEx(ex, cmd); }
         }
 
@@ -44,7 +60,6 @@ namespace task17
             Console.WriteLine($"Ex: {cmd.GetType().Name} -> {ex.Message}");
         }
 
-        public void SetAct(Action newAct) => _act = newAct;
         public void Stop() => _stop = true;
         public Thread internalThread => _thread;
     }

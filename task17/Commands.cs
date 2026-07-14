@@ -31,11 +31,7 @@ namespace task17
         {
             if (Thread.CurrentThread != _thread.internalThread) throw new InvalidOperationException();
             
-            _thread.SetAct(() =>
-            {
-                if (_queue.TryTake(out var cmd)) cmd.Execute();
-                else _thread.Stop();
-            });
+            _queue.CompleteAdding();
         }
     }
 }
