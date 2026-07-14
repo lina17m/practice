@@ -73,5 +73,26 @@ namespace task17
             Assert.True(longTask.IsCompleted);
             server.Stop();
         }
+
+        [Fact]
+        public void ExecutionAndInterrupt()
+        {
+            var queue = new BlockingCollection<ICommand>();
+            var scheduler = new Scheduler();
+            var server = new ServerThread(queue, scheduler);
+
+            for (int i = 1; i <= 5; i++)
+            {
+                queue.Add(new NewCommand(i));
+            }
+
+            server.Start();
+            Thread.Sleep(500);
+
+            queue.Add(new HardStop(server));
+            server.internalThread.Join(1000);
+
+            Assert.False(server.internalThread.IsAlive);
+        }
     }
 }
